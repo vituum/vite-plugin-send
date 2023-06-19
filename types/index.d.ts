@@ -1,7 +1,6 @@
 export interface PluginUserConfig {
-    send?: boolean
     content?: string
-    file?: string[] | string
+    filename?: string
     from?: string
     to?: string
     host?: string

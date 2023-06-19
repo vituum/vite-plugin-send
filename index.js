@@ -8,7 +8,7 @@ const { name } = getPackageInfo(import.meta.url)
  */
 export const defaultOptions = {
     content: null,
-    file: process.env.VITUUM_SEND_FILE || null,
+    filename: process.env.VITUUM_SEND_FILE || null,
     from: process.env.VITUUM_SEND_FROM || 'example@example.com',
     to: process.env.VITUUM_SEND_TO || null,
     host: process.env.VITUUM_SEND_HOST || null,
@@ -27,10 +27,14 @@ const plugin = (options = {}) => {
         name,
         enforce: 'post',
         transformIndexHtml: {
-            async transform (content, { path, server }) {
+            async transform (content, { path, filename, server }) {
+                filename = filename.split('?')[0]
+
+                // do as a websocket request
                 if (server && path.endsWith('?send')) {
                     await send({
-                        content: options.content,
+                        filename: filename.replace('.html', ''),
+                        content,
                         from: options.from,
                         to: options.to,
                         host: options.host,

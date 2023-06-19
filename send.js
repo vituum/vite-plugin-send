@@ -11,20 +11,17 @@ const { name, version } = getPackageInfo(import.meta.url)
 const send = async (userConfig = defaultOptions) => {
     dotenv()
 
-    const content = userConfig.content
-    const to = userConfig.to
-
     console.info(`${pc.cyan(`${name} v${version}`)} ${pc.green('sending test email...')}`)
 
-    if (!content && !userConfig.file) {
+    if (!userConfig.content || !userConfig.filename) {
         console.info(`${pc.cyan(`${name} v${version}`)} ${pc.red('no content provided to send')}`)
     }
 
-    if (!to) {
+    if (!userConfig.to) {
         console.info(`${pc.cyan(`${name} v${version}`)} ${pc.red('recipient not defined')}`)
     }
 
-    if (!content || !to) {
+    if (!userConfig.content || !userConfig.to) {
         return
     }
 
@@ -37,20 +34,18 @@ const send = async (userConfig = defaultOptions) => {
         }
     })
 
-    const file = path.join(process.cwd(), userConfig.file)
+    const file = path.resolve(process.cwd(), userConfig.filename)
 
     if (!fs.existsSync(file)) {
-        console.info(`${pc.cyan(`${name} v${version}`)} ${pc.red('email template not found')} ${pc.gray(file)}`)
+        console.info(`${pc.cyan(`${name} v${version}`)} ${pc.red('email template file not found')} ${pc.gray(file)}`)
         return
     }
 
-    const html = fs.readFileSync(file).toString()
-
     await transport.sendMail({
-        from: userConfig.send.from,
-        to,
+        from: userConfig.from,
+        to: userConfig.to,
         subject: `${path.basename(process.cwd())} - ${path.basename(file)}`,
-        html
+        html: userConfig.content ? userConfig.content : fs.readFileSync(file).toString()
     }, (error, info) => {
         if (error) {
             return console.error(pc.red(error))
