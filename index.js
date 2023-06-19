@@ -4,7 +4,7 @@ import send from './send.js'
 const { name } = getPackageInfo(import.meta.url)
 
 /**
- * @type {import('@vituum/vite-plugin-send/types/index').PluginUserConfig}
+ * @type {import('@vituum/vite-plugin-send/types').PluginUserConfig}
  */
 export const defaultOptions = {
     content: null,
@@ -17,7 +17,7 @@ export const defaultOptions = {
 }
 
 /**
- * @param {import('@vituum/vite-plugin-send/types/index').PluginUserConfig} options
+ * @param {import('@vituum/vite-plugin-send/types').PluginUserConfig} options
  * @returns {import('vite').Plugin}
  */
 const plugin = (options = {}) => {
