@@ -8,9 +8,9 @@ import { defaultOptions } from './index.js'
 
 const { name, version } = getPackageInfo(import.meta.url)
 
-const send = async (userConfig = defaultOptions) => {
-    dotenv()
+dotenv()
 
+const send = async (userConfig = defaultOptions) => {
     console.info(`${pc.cyan(`${name} v${version}`)} ${pc.green('sending test email...')}`)
 
     if (!userConfig.content || !userConfig.filename) {
