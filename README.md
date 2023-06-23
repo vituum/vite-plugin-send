@@ -2,9 +2,9 @@
 <a href="https://nodejs.org/en/about/releases/"><img src="https://img.shields.io/node/v/@vituum/vite-plugin-send.svg" alt="node compatility"></a>
 
 # ⚡️✉️ ViteSend
-Lets you send content of your page via `nodemailer` when `?send` get param is present Vite Dev Server. Handy for testing email templates!
+Lets you send content of your page via `nodemailer` when `?send` get param is present in Vite Dev Server. Handy for testing email templates!
 
-You can also export `send` from `@vituum/vite-plugin-send` or `@vituum/vite-plugin-send/send.js` to write a custom script you can call via Node.js
+You can also export `send` from `@vituum/vite-plugin-send` or `@vituum/vite-plugin-send/send.js` to write a custom script which you can call via Node.js
 
 ## Basic usage
 
@@ -18,7 +18,7 @@ export default {
 }
 ```
 
-Read the [docs](https://vituum.dev/config/plugins-options.html#vituum-send) to learn more about plugin options
+Read the [docs](https://vituum.dev/plugins/send) to learn more about plugin options.
 
 ### Requirements
 
