@@ -1,6 +1,6 @@
 {
   "name": "@vituum/vite-plugin-send",
-  "version": "1.0.0-alpha.2",
+  "version": "1.0.0-beta.1",
   "type": "module",
   "main": "index.js",
   "scripts": {
@@ -9,7 +9,7 @@
     "send": "node node_modules/@vituum/vite-plugin-send/send.js"
   },
   "dependencies": {
-    "vituum": "^1.0.0-alpha.16",
+    "vituum": "^1.0.0-beta.3",
     "nodemailer": "^6.9.3",
     "picocolors": "^1.0.0",
     "dotenv": "^16.3.1"

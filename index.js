@@ -26,22 +26,29 @@ const plugin = (options = {}) => {
     return {
         name,
         enforce: 'post',
+        configureServer (server) {
+            server.ws.on('my:send', async ({ content, filename }) => {
+                await send({
+                    filename: filename.replace('.html', ''),
+                    content,
+                    from: options.from,
+                    to: options.to,
+                    host: options.host,
+                    user: options.user,
+                    pass: options.pass
+                })
+            })
+        },
         transformIndexHtml: {
             async transform (content, { path, filename, server }) {
-                filename = filename.split('?')[0]
-
-                // do as a websocket request
-                if (server && path.endsWith('?send')) {
-                    await send({
-                        filename: filename.replace('.html', ''),
-                        content,
-                        from: options.from,
-                        to: options.to,
-                        host: options.host,
-                        user: options.user,
-                        pass: options.pass
-                    })
-                }
+                const html = `
+                    <script>
+                        if (import.meta.hot && window.location.search === '?send') {
+                            import.meta.hot.send('my:send', { filename: window.location.href, content: document.doctype + document.documentElement.outerHTML })
+                        }
+                    </script>
+                `
+                content = content.replace('</head>', html + '</head>')
 
                 return content
             }
