@@ -4,48 +4,56 @@ import nodemailer from 'nodemailer'
 import path from 'path'
 import fs from 'fs'
 import { getPackageInfo } from 'vituum/utils/common.js'
-import { defaultOptions } from './index.js'
 
 const { name, version } = getPackageInfo(import.meta.url)
 
 dotenv()
 
-const send = async (userConfig = defaultOptions) => {
+const send = async (userOptions = {}) => {
     console.info(`${pc.cyan(`${name} v${version}`)} ${pc.green('sending test email...')}`)
 
-    if (!userConfig.content || !userConfig.filename) {
-        console.info(`${pc.cyan(`${name} v${version}`)} ${pc.red('no content provided to send')}`)
-    }
-
-    if (!userConfig.to) {
+    if (!userOptions.to) {
         console.info(`${pc.cyan(`${name} v${version}`)} ${pc.red('recipient not defined')}`)
-    }
-
-    if (!userConfig.content || !userConfig.to) {
         return
     }
 
+    if (!userOptions.user || !userOptions.host || !userOptions.pass) {
+        console.info(`${pc.cyan(`${name} v${version}`)} ${pc.red('SMTP credentials not defined')}`)
+        return
+    }
+
+    let subject = 'Vituum Email'
+    let html = userOptions.content
+
     const transport = nodemailer.createTransport({
-        host: userConfig.host,
+        host: userOptions.host,
         port: 465,
         auth: {
-            user: userConfig.user,
-            pass: userConfig.pass
+            user: userOptions.user,
+            pass: userOptions.pass
         }
     })
 
-    const file = path.resolve(process.cwd(), userConfig.filename)
+    if (userOptions.filename) {
+        const file = path.resolve(process.cwd(), userOptions.filename)
 
-    if (!fs.existsSync(file)) {
-        console.info(`${pc.cyan(`${name} v${version}`)} ${pc.red('email template file not found')} ${pc.gray(file)}`)
+        subject = path.basename(file)
+
+        if (!userOptions.content) {
+            html = fs.readFileSync(file).toString()
+        }
+    }
+
+    if (!userOptions.content) {
+        console.info(`${pc.cyan(`${name} v${version}`)} ${pc.red('no content to send')}`)
         return
     }
 
     await transport.sendMail({
-        from: userConfig.from,
-        to: userConfig.to,
-        subject: `${path.basename(process.cwd())} - ${path.basename(file)}`,
-        html: userConfig.content ? userConfig.content : fs.readFileSync(file).toString()
+        from: userOptions.from,
+        to: userOptions.to,
+        subject,
+        html
     }, (error, info) => {
         if (error) {
             return console.error(pc.red(error))

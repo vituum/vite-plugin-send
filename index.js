@@ -25,11 +25,10 @@ const plugin = (options = {}) => {
 
     return {
         name,
-        enforce: 'post',
+        enforce: 'pre',
         configureServer (server) {
             server.ws.on('my:send', async ({ content, filename }) => {
                 await send({
-                    filename: filename.replace('.html', ''),
                     content,
                     from: options.from,
                     to: options.to,
@@ -40,11 +39,17 @@ const plugin = (options = {}) => {
             })
         },
         transformIndexHtml: {
+            order: 'pre',
             async transform (content, { path, filename, server }) {
                 const html = `
-                    <script>
+                    <script type="module">
                         if (import.meta.hot && window.location.search === '?send') {
-                            import.meta.hot.send('my:send', { filename: window.location.href, content: document.doctype + document.documentElement.outerHTML })
+                            import.meta.hot.send('my:send', { 
+                                filename: window.location.href, 
+                                content: 
+                                    new XMLSerializer().serializeToString(document.doctype) + 
+                                    document.documentElement.outerHTML.replace(/<script\\b[^>]*>[\\s\\S]*?<\\/script>/gi, "") 
+                            })
                         }
                     </script>
                 `
