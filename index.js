@@ -40,7 +40,11 @@ const plugin = (options = {}) => {
         },
         transformIndexHtml: {
             order: 'pre',
-            async transform (content, { path, filename, server }) {
+            async transform (content, { server }) {
+                if (!server) {
+                    return content
+                }
+
                 const html = `
                     <script type="module">
                         if (import.meta.hot && window.location.search === '?send') {
