@@ -22,5 +22,5 @@ Read the [docs](https://vituum.dev/plugins/send) to learn more about plugin opti
 
 ### Requirements
 
-- [Node.js LTS (18.x)](https://nodejs.org/en/download/)
+- [Node.js LTS (16.x)](https://nodejs.org/en/download/)
 - [Vite](https://vitejs.dev/)

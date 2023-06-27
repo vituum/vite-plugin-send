@@ -7,3 +7,5 @@ export interface PluginUserConfig {
     user?: string
     pass?: string
 }
+
+export default function plugin(options?: PluginUserConfig) : import('vite').Plugin
