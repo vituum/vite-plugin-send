@@ -6,6 +6,7 @@ export interface PluginUserConfig {
     host?: string
     user?: string
     pass?: string
+    insertScriptBefore?: string
 }
 
 export default function plugin(options?: PluginUserConfig) : import('vite').Plugin

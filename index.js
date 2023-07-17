@@ -13,7 +13,8 @@ export const defaultOptions = {
     to: process.env.VITUUM_SEND_TO || null,
     host: process.env.VITUUM_SEND_HOST || null,
     user: process.env.VITUUM_SEND_USER || null,
-    pass: process.env.VITUUM_SEND_PASS || null
+    pass: process.env.VITUUM_SEND_PASS || null,
+    insertScriptBefore: '</head>'
 }
 
 /**
@@ -57,7 +58,7 @@ const plugin = (options = {}) => {
                         }
                     </script>
                 `
-                content = content.replace('</head>', html + '</head>')
+                content = content.replace(options.insertScriptBefore, html + options.insertScriptBefore)
 
                 return content
             }
