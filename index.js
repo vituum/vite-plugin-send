@@ -41,7 +41,7 @@ const plugin = (options = {}) => {
         },
         transformIndexHtml: {
             order: 'pre',
-            async transform (content, { server }) {
+            async handler (content, { server }) {
                 if (!server) {
                     return content
                 }
