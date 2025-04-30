@@ -7,7 +7,7 @@ import { getPackageInfo } from 'vituum/utils/common.js'
 
 const { name, version } = getPackageInfo(import.meta.url)
 
-dotenv()
+dotenv({ path: ['.env.local', '.env'] })
 
 const send = async (userOptions = {}) => {
     console.info(`${pc.cyan(`${name} v${version}`)} ${pc.green('sending test email...')}`)
