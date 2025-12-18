@@ -1,4 +1,4 @@
-import { getPackageInfo, merge } from 'vituum/utils/common'
+import { getPackageInfo, merge } from 'vituum/utils/common.js'
 import send from './send.js'
 import process from 'node:process'
 
