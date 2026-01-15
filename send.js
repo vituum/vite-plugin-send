@@ -7,8 +7,16 @@ import process from 'node:process'
 
 const { name, version } = getPackageInfo(import.meta.url)
 
-process.loadEnvFile('.env')
-process.loadEnvFile('.env.local')
+const envPath = path.resolve(process.cwd(), '.env')
+const envLocalPath = path.resolve(process.cwd(), '.env.local')
+
+if (fs.existsSync(envPath)) {
+  process.loadEnvFile(envPath)
+}
+
+if (fs.existsSync(envLocalPath)) {
+  process.loadEnvFile(envLocalPath)
+}
 
 const send = async (userOptions = {}) => {
   console.info(`${styleText('cyan', `${name} v${version}`)} ${styleText('green', 'sending test email...')}`)
