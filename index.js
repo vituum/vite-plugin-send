@@ -1,4 +1,4 @@
-import { getPackageInfo, merge } from 'vituum/utils/common.js'
+import { getPackageInfo, deepMergeWith } from 'vituum/utils/common.js'
 import send from './send.js'
 import process from 'node:process'
 
@@ -23,7 +23,7 @@ export const defaultOptions = {
  * @returns {import('vite').Plugin}
  */
 const plugin = (options = {}) => {
-  options = merge(defaultOptions, options)
+  options = deepMergeWith(defaultOptions, options)
 
   return {
     name,
@@ -48,17 +48,17 @@ const plugin = (options = {}) => {
         }
 
         const html = `
-                    <script type="module">
-                        if (import.meta.hot && window.location.search === '?send') {
-                            import.meta.hot.send('my:send', { 
-                                filename: window.location.href, 
-                                content: 
-                                    new XMLSerializer().serializeToString(document.doctype) + 
-                                    document.documentElement.outerHTML.replace(/<script\\b[^>]*>[\\s\\S]*?<\\/script>/gi, "") 
-                            })
-                        }
-                    </script>
-                `
+          <script type="module">
+            if (import.meta.hot && window.location.search === '?send') {
+              import.meta.hot.send('my:send', { 
+                filename: window.location.href, 
+                content: 
+                  new XMLSerializer().serializeToString(document.doctype) + 
+                  document.documentElement.outerHTML.replace(/<script\\b[^>]*>[\\s\\S]*?<\\/script>/gi, "") 
+              })
+            }
+          </script>
+        `
         content = content.replace(options.insertScriptBefore, html + options.insertScriptBefore)
 
         return content
