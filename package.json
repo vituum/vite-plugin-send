@@ -1,26 +1,30 @@
 {
   "name": "@vituum/vite-plugin-send",
-  "version": "1.2.0",
+  "version": "2.0.0",
   "type": "module",
   "main": "index.js",
   "types": "types/index.d.ts",
   "scripts": {
+    "lint": "npm run eslint && npm run tsc",
     "tsc": "tsc",
-    "eslint": "eslint '**/*.js' --fix",
-    "send": "node node_modules/@vituum/vite-plugin-send/send.js"
+    "eslint": "eslint '**/*.js'",
+    "eslint-fix": "eslint '**/*.js' --fix",
+    "send": "node node_modules/@vituum/vite-plugin-send/send.js",
+    "publish-next": "npm publish --tag next"
   },
   "dependencies": {
-    "vituum": "^1.1",
-    "nodemailer": "^7.0",
-    "picocolors": "^1.0",
-    "dotenv": "^16.3"
+    "nodemailer": "^8.0",
+    "vituum": "^2.0"
   },
   "devDependencies": {
-    "@types/node": "^20.9.1",
-    "vite": "^5.0.0",
-    "eslint": "^8.53.0",
-    "eslint-config-standard": "^17.1.0",
-    "typescript": "^5.2.2"
+    "@eslint/js": "^10.0",
+    "@stylistic/eslint-plugin": "^5.10",
+    "@types/node": "^25.5",
+    "@types/nodemailer": "^7.0",
+    "eslint": "^10.0",
+    "globals": "^17.4",
+    "typescript": "^5.9",
+    "vite": "^8.0"
   },
   "files": [
     "index.js",
@@ -28,11 +32,13 @@
     "types"
   ],
   "exports": {
-    ".": "./index.js",
-    "./types": "./types/*"
+    ".": {
+      "default": "./index.js",
+      "types": "./types/index.d.ts"
+    }
   },
   "engines": {
-    "node": "^18.0.0 || >=20.0.0"
+    "node": "^20.19.0 || >=22.12.0"
   },
   "repository": {
     "type": "git",
